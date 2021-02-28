@@ -4,8 +4,8 @@
   "description": "Tractian challenge backend",
   "main": "index.js",
   "scripts": {
-    "build": "npm install && ts-node src/index.ts",
-    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
     "dev": "ts-node-dev src/index.ts"
   },
   "keywords": [
