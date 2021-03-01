@@ -39,5 +39,15 @@ router.post('/facility/company', async(req: Request, res: Response): Promise<any
     }
 })
 
+router.delete('/facility', async(req: Request, res: Response): Promise<any> => {
+    try {
+        const facilityId = req.body.facility 
+        await Facility.deleteOne({_id: facilityId})
+        res.send({'sucess': 'facility deleted' })
+    } catch (error) {
+        res.status(400).send({error: error.message})
+    }
+})
+
 
 export default router;

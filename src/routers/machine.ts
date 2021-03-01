@@ -3,6 +3,7 @@ import Company from '../models/company'
 import multer from "multer"
 import Facility from '../models/facility';
 import Machine from '../models/machine';
+import User from '../models/user';
 
 const router = express.Router();
 
@@ -60,5 +61,53 @@ router.post('/machine/create', upload.single('image'), async(req: Request, res: 
         res.status(400).send({error: error.message})
     }
 })
+
+router.delete('/machine', async(req: Request, res: Response): Promise<any> => {
+    try {
+        const machineId = req.body.machine 
+        await Machine.deleteOne({_id: machineId})
+        res.send({'sucess': 'machine deleted' })
+    } catch (error) {
+        res.status(400).send({error: error.message})
+    }
+})
+
+router.patch('/machine', upload.single('image'), async(req: Request, res: Response): Promise<any> => {
+    try {
+        const machineId = req.body.machine 
+        if (!machineId)
+            throw new Error('invalid machine')
+
+        if(req.file && req.file.buffer){
+            const image = req.file.buffer.toString('base64')
+            await Machine.findOneAndUpdate({_id: machineId}, {image})
+        }
+
+        if(req.body.name !== undefined)
+            await Machine.findOneAndUpdate({_id: machineId}, {name: req.body.name})
+
+        if(req.body.description !== undefined)
+            await Machine.findOneAndUpdate({_id: machineId}, {description: req.body.description})
+
+        if(req.body.model !== undefined)
+            await Machine.findOneAndUpdate({_id: machineId}, {model: req.body.model})
+        
+        if(req.body.status !== undefined)
+            await Machine.findOneAndUpdate({_id: machineId}, {status: req.body.status})
+
+        if(req.body.health !== undefined){
+            await Machine.findOneAndUpdate({_id: machineId}, {health: req.body.health})
+        }
+
+        if(req.body.responsible !== undefined)
+            await Machine.findOneAndUpdate({_id: machineId}, {model: req.body.responsible})
+
+
+        res.send({'sucess': 'machine updated'})
+    } catch (error) {
+        res.status(400).send({error: error.message})
+    }
+})
+
 
 export default router;

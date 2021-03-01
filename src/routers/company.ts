@@ -60,4 +60,15 @@ router.post('/company/info', async(req: Request, res: Response): Promise<any> =>
     }
 })
 
+router.delete('/company', async(req: Request, res: Response): Promise<any> => {
+    try {
+        const companyId = req.body.company 
+        await Company.deleteOne({_id: companyId})
+        res.send({'sucess': 'company deleted' })
+    } catch (error) {
+        res.status(400).send({error: error.message})
+    }
+})
+
+
 export default router;

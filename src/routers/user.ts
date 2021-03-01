@@ -29,4 +29,14 @@ router.post('/user/create', async(req: Request, res: Response): Promise<any> => 
     }
 })
 
+router.delete('/user', async(req: Request, res: Response): Promise<any> => {
+    try {
+        const userId = req.body.user 
+        await User.deleteOne({_id: userId})
+        res.send({'sucess': 'user deleted' })
+    } catch (error) {
+        res.status(400).send({error: error.message})
+    }
+})
+
 export default router;
